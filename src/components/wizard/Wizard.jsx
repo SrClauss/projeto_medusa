@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box, Container } from '@mui/material';
 import { WizardProvider, useWizard } from '../../contexts/WizardContext';
 import { WizardStepper } from './WizardStepper';
 import { YamlNavigator } from './YamlNavigator';
@@ -51,13 +52,16 @@ const WizardContent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <Box sx={{ 
+      minHeight: '100vh',
+      bgcolor: 'background.default',
+    }}>
       <WizardStepper currentStep={currentStep} />
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <Container maxWidth="lg" sx={{ py: 4 }}>
         <YamlNavigator />
         {renderStep()}
-      </div>
-    </div>
+      </Container>
+    </Box>
   );
 };
 

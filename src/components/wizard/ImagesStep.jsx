@@ -1,5 +1,32 @@
 import React, { useState } from 'react';
-import { Image as ImageIcon, ArrowRight, ArrowLeft, FolderOpen, CheckCircle, AlertCircle, X } from 'lucide-react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Button,
+  Typography,
+  Paper,
+  Stack,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Alert,
+  Chip,
+  CircularProgress,
+} from '@mui/material';
+import {
+  Image as ImageIcon,
+  ArrowForward,
+  ArrowBack,
+  FolderOpen,
+  CheckCircle,
+  Error as AlertCircleIcon,
+  Close as CloseIcon,
+} from '@mui/icons-material';
 import { open } from '@tauri-apps/plugin-dialog';
 import { invoke } from '@tauri-apps/api/core';
 import { useWizard } from '../../contexts/WizardContext';
@@ -45,21 +72,55 @@ export const ImagesStep = () => {
   const mappingData = wizardData.images.mapping || mapping;
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <div className="flex items-center mb-6">
-          <ImageIcon className="w-8 h-8 text-cyan-500 mr-3" />
-          <h2 className="text-2xl font-bold text-gray-800">Imagens dos Produtos</h2>
-        </div>
-        
-        <p className="text-gray-600 mb-6">
-          Selecione o diretório raiz contendo as imagens dos produtos. Cada subpasta deve ter o nome
-          igual ao <strong>codigo_interno</strong> do produto e conter as imagens correspondentes.
-        </p>
+    <Box sx={{ maxWidth: 1400, mx: 'auto', py: 4 }}>
+      <Card elevation={2}>
+        <CardContent sx={{ p: 4 }}>
+          <Stack spacing={3}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <ImageIcon sx={{ fontSize: 40, color: 'info.main' }} />
+              <Typography variant="h4" component="h2" fontWeight="bold">
+                Imagens dos Produtos
+              </Typography>
+            </Box>
+            
+            <Typography variant="body1" color="text.secondary">
+              Selecione o diretório raiz contendo as imagens dos produtos. Cada subpasta deve ter o nome
+              igual ao <strong>codigo_interno</strong> do produto e conter as imagens correspondentes.
+            </Typography>
 
-        <div className="mb-6 p-4 bg-cyan-50 border border-cyan-200 rounded-lg">
-          <h3 className="font-medium text-cyan-900 mb-2">Estrutura esperada:</h3>
-          <pre className="text-sm text-cyan-800 font-mono bg-white p-3 rounded border border-cyan-300 overflow-x-auto">
+            <Paper 
+              elevation={0} 
+              sx={{ 
+                p: 3, 
+                bgcolor: 'info.lighter',
+                border: 1,
+                borderColor: 'info.main',
+                borderRadius: 2,
+              }}
+            >
+              <Typography variant="subtitle1" fontWeight="bold" color="info.dark" gutterBottom>
+                Estrutura esperada:
+              </Typography>
+              <Paper
+                sx={{
+                  p: 2,
+                  bgcolor: 'background.paper',
+                  border: 1,
+                  borderColor: 'info.light',
+                  borderRadius: 1,
+                  overflowX: 'auto',
+                }}
+              >
+                <Typography 
+                  component="pre" 
+                  variant="body2" 
+                  color="info.dark"
+                  sx={{ 
+                    fontFamily: 'monospace',
+                    m: 0,
+                    whiteSpace: 'pre',
+                  }}
+                >
 {`imagens/
 ├── 1/
 │   ├── foto1.jpg
@@ -70,196 +131,284 @@ export const ImagesStep = () => {
 │   └── detalhe.webp
 └── 3/
     └── imagem.jpg`}
-          </pre>
-          <p className="text-sm text-cyan-700 mt-2">
-            Os nomes das subpastas (1, 2, 3) devem corresponder ao <strong>codigo_interno</strong> dos produtos.
-          </p>
-        </div>
+                </Typography>
+              </Paper>
+              <Typography variant="body2" color="info.dark" sx={{ mt: 2 }}>
+                Os nomes das subpastas (1, 2, 3) devem corresponder ao <strong>codigo_interno</strong> dos produtos.
+              </Typography>
+            </Paper>
 
-        {!hasImages ? (
-          <div className="text-center py-12">
-            <FolderOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600 mb-6">Nenhum diretório selecionado</p>
-            <button
-              onClick={handleDirectorySelect}
-              disabled={loading}
-              className="px-6 py-3 bg-cyan-500 text-white rounded-lg font-medium hover:bg-cyan-600 disabled:bg-gray-300 disabled:cursor-not-allowed inline-flex items-center"
-            >
-              <FolderOpen className="w-5 h-5 mr-2" />
-              {loading ? 'Escaneando...' : 'Selecionar Diretório'}
-            </button>
-          </div>
-        ) : (
-          <div>
-            <div className="p-4 bg-green-50 border border-green-200 rounded-lg flex items-start mb-6">
-              <CheckCircle className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm text-green-800 font-medium">
-                  Diretório escaneado com sucesso!
-                </p>
-                <p className="text-sm text-green-600 mt-1">
-                  {wizardData.images.directory}
-                </p>
-              </div>
-            </div>
+            {!hasImages ? (
+              <Box sx={{ textAlign: 'center', py: 8 }}>
+                <FolderOpen sx={{ fontSize: 80, color: 'text.disabled', mb: 2 }} />
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+                  Nenhum diretório selecionado
+                </Typography>
+                <Button
+                  variant="contained"
+                  size="large"
+                  color="info"
+                  onClick={handleDirectorySelect}
+                  disabled={loading}
+                  startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <FolderOpen />}
+                >
+                  {loading ? 'Escaneando...' : 'Selecionar Diretório'}
+                </Button>
+              </Box>
+            ) : (
+              <Box>
+                <Alert 
+                  severity="success" 
+                  icon={<CheckCircle />}
+                  sx={{ mb: 3 }}
+                >
+                  <Typography variant="body2" fontWeight="bold">
+                    Diretório escaneado com sucesso!
+                  </Typography>
+                  <Typography variant="body2">
+                    {wizardData.images.directory}
+                  </Typography>
+                </Alert>
 
-            {/* Summary */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-2xl font-bold text-blue-900">
-                  {mappingData?.productsWithImages || 0}
-                </p>
-                <p className="text-sm text-blue-700">Produtos com imagens</p>
-              </div>
-              <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <p className="text-2xl font-bold text-yellow-900">
-                  {mappingData?.productsWithoutImages || 0}
-                </p>
-                <p className="text-sm text-yellow-700">Produtos sem imagens</p>
-              </div>
-              <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
-                <p className="text-2xl font-bold text-purple-900">
-                  {mappingData?.totalImages || 0}
-                </p>
-                <p className="text-sm text-purple-700">Total de imagens</p>
-              </div>
-            </div>
+                {/* Summary */}
+                <Grid container spacing={2} sx={{ mb: 3 }}>
+                  <Grid item xs={12} md={4}>
+                    <Paper 
+                      elevation={0}
+                      sx={{ 
+                        p: 3, 
+                        bgcolor: 'primary.light',
+                        border: 1,
+                        borderColor: 'primary.light',
+                        borderRadius: 2,
+                      }}
+                    >
+                      <Typography variant="h4" fontWeight="bold" color="primary.dark">
+                        {mappingData?.productsWithImages || 0}
+                      </Typography>
+                      <Typography variant="body2" color="primary.dark">
+                        Produtos com imagens
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} md={4}>
+                    <Paper 
+                      elevation={0}
+                      sx={{ 
+                        p: 3, 
+                        bgcolor: 'warning.light',
+                        border: 1,
+                        borderColor: 'warning.light',
+                        borderRadius: 2,
+                      }}
+                    >
+                      <Typography variant="h4" fontWeight="bold" color="warning.dark">
+                        {mappingData?.productsWithoutImages || 0}
+                      </Typography>
+                      <Typography variant="body2" color="warning.dark">
+                        Produtos sem imagens
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} md={4}>
+                    <Paper 
+                      elevation={0}
+                      sx={{ 
+                        p: 3, 
+                        bgcolor: 'secondary.light',
+                        border: 1,
+                        borderColor: 'secondary.light',
+                        borderRadius: 2,
+                      }}
+                    >
+                      <Typography variant="h4" fontWeight="bold" color="secondary.dark">
+                        {mappingData?.totalImages || 0}
+                      </Typography>
+                      <Typography variant="body2" color="secondary.dark">
+                        Total de imagens
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                </Grid>
 
-            {/* Warnings */}
-            {mappingData?.productsWithoutImages > 0 && (
-              <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <div className="flex items-start">
-                  <AlertCircle className="w-5 h-5 text-yellow-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-sm text-yellow-800 font-medium">
+                {/* Warnings */}
+                {mappingData?.productsWithoutImages > 0 && (
+                  <Alert 
+                    severity="warning"
+                    icon={<AlertCircleIcon />}
+                    sx={{ mb: 3 }}
+                  >
+                    <Typography variant="body2" fontWeight="bold">
                       {mappingData.productsWithoutImages} produto(s) sem imagens
-                    </p>
-                    <p className="text-sm text-yellow-700 mt-1">
+                    </Typography>
+                    <Typography variant="body2">
                       Estes produtos serão criados sem imagens. Você pode adicionar imagens depois.
-                    </p>
+                    </Typography>
                     {mappingData.missingFolders && mappingData.missingFolders.length > 0 && (
-                      <div className="mt-2">
-                        <p className="text-xs text-yellow-700 font-medium">Pastas não encontradas:</p>
-                        <div className="flex flex-wrap gap-2 mt-1">
+                      <Box sx={{ mt: 2 }}>
+                        <Typography variant="caption" fontWeight="bold">
+                          Pastas não encontradas:
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
                           {mappingData.missingFolders.slice(0, 10).map((folder, i) => (
-                            <span key={i} className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs font-mono">
-                              {folder}
-                            </span>
+                            <Chip 
+                              key={i}
+                              label={folder}
+                              size="small"
+                              sx={{ 
+                                fontFamily: 'monospace',
+                                bgcolor: 'warning.light',
+                              }}
+                            />
                           ))}
                           {mappingData.missingFolders.length > 10 && (
-                            <span className="px-2 py-1 text-yellow-700 text-xs">
+                            <Typography variant="caption" color="text.secondary">
                               +{mappingData.missingFolders.length - 10} mais
-                            </span>
+                            </Typography>
                           )}
-                        </div>
-                      </div>
+                        </Box>
+                      </Box>
                     )}
-                  </div>
-                </div>
-              </div>
-            )}
+                  </Alert>
+                )}
 
-            {mappingData?.orphanFolders && mappingData.orphanFolders.length > 0 && (
-              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <div className="flex items-start">
-                  <AlertCircle className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-sm text-blue-800 font-medium">
+                {mappingData?.orphanFolders && mappingData.orphanFolders.length > 0 && (
+                  <Alert 
+                    severity="info"
+                    icon={<AlertCircleIcon />}
+                    sx={{ mb: 3 }}
+                  >
+                    <Typography variant="body2" fontWeight="bold">
                       {mappingData.orphanFolders.length} pasta(s) órfã(s) encontrada(s)
-                    </p>
-                    <p className="text-sm text-blue-700 mt-1">
+                    </Typography>
+                    <Typography variant="body2">
                       Estas pastas não correspondem a nenhum produto e serão ignoradas.
-                    </p>
-                  </div>
-                </div>
-              </div>
+                    </Typography>
+                  </Alert>
+                )}
+
+                {/* Details Table */}
+                {mappingData?.details && mappingData.details.length > 0 && (
+                  <Box sx={{ mb: 3 }}>
+                    <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 2 }}>
+                      Detalhes da associação:
+                    </Typography>
+                    <TableContainer 
+                      component={Paper} 
+                      variant="outlined"
+                      sx={{ 
+                        maxHeight: 480,
+                        overflow: 'auto',
+                      }}
+                    >
+                      <Table stickyHeader>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell sx={{ fontWeight: 'bold', textTransform: 'uppercase', fontSize: '0.75rem', bgcolor: 'grey.50' }}>
+                              Código
+                            </TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', textTransform: 'uppercase', fontSize: '0.75rem', bgcolor: 'grey.50' }}>
+                              Produto
+                            </TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', textTransform: 'uppercase', fontSize: '0.75rem', bgcolor: 'grey.50' }}>
+                              Imagens
+                            </TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', textTransform: 'uppercase', fontSize: '0.75rem', bgcolor: 'grey.50' }}>
+                              Status
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {mappingData.details.map((item, index) => (
+                            <TableRow key={index}>
+                              <TableCell sx={{ fontFamily: 'monospace' }}>
+                                {item.codigo_interno}
+                              </TableCell>
+                              <TableCell sx={{ 
+                                maxWidth: 300, 
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                              }}>
+                                {item.productName}
+                              </TableCell>
+                              <TableCell>{item.imageCount}</TableCell>
+                              <TableCell>
+                                {item.imageCount > 0 ? (
+                                  <Chip
+                                    icon={<CheckCircle sx={{ fontSize: 16 }} />}
+                                    label="OK"
+                                    size="small"
+                                    color="success"
+                                    variant="outlined"
+                                  />
+                                ) : (
+                                  <Chip
+                                    icon={<CloseIcon sx={{ fontSize: 16 }} />}
+                                    label="Sem imagens"
+                                    size="small"
+                                    color="warning"
+                                    variant="outlined"
+                                  />
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Box>
+                )}
+
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={handleDirectorySelect}
+                  startIcon={<FolderOpen />}
+                >
+                  Selecionar outro diretório
+                </Button>
+              </Box>
             )}
 
-            {/* Details Table */}
-            {mappingData?.details && mappingData.details.length > 0 && (
-              <div className="mb-6">
-                <h3 className="font-medium text-gray-900 mb-3">Detalhes da associação:</h3>
-                <div className="overflow-x-auto max-h-96 overflow-y-auto border border-gray-200 rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50 sticky top-0">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Código</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Produto</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Imagens</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {mappingData.details.map((item, index) => (
-                        <tr key={index}>
-                          <td className="px-4 py-3 text-sm font-mono text-gray-900">
-                            {item.codigo_interno}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-900 max-w-xs truncate">
-                            {item.productName}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-600">
-                            {item.imageCount}
-                          </td>
-                          <td className="px-4 py-3 text-sm">
-                            {item.imageCount > 0 ? (
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                <CheckCircle className="w-3 h-3 mr-1" />
-                                OK
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                <X className="w-3 h-3 mr-1" />
-                                Sem imagens
-                              </span>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+            {error && (
+              <Alert 
+                severity="error"
+                icon={<AlertCircleIcon />}
+                sx={{ mt: 2 }}
+              >
+                <Typography variant="body2" fontWeight="bold">
+                  Erro
+                </Typography>
+                <Typography variant="body2">
+                  {error}
+                </Typography>
+              </Alert>
             )}
 
-            <button
-              onClick={handleDirectorySelect}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 inline-flex items-center text-sm"
-            >
-              <FolderOpen className="w-4 h-4 mr-2" />
-              Selecionar outro diretório
-            </button>
-          </div>
-        )}
-
-        {error && (
-          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
-            <AlertCircle className="w-5 h-5 text-red-500 mr-2 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm text-red-800 font-medium">Erro</p>
-              <p className="text-sm text-red-600 mt-1">{error}</p>
-            </div>
-          </div>
-        )}
-
-        <div className="mt-8 flex justify-between">
-          <button
-            onClick={prevStep}
-            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 flex items-center"
-          >
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Voltar
-          </button>
-          <button
-            onClick={nextStep}
-            disabled={!hasImages}
-            className="px-6 py-3 bg-cyan-500 text-white rounded-lg font-medium hover:bg-cyan-600 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center"
-          >
-            Continuar
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </button>
-        </div>
-      </div>
-    </div>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={prevStep}
+                startIcon={<ArrowBack />}
+              >
+                Voltar
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                color="info"
+                onClick={nextStep}
+                disabled={!hasImages}
+                endIcon={<ArrowForward />}
+              >
+                Continuar
+              </Button>
+            </Box>
+          </Stack>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
