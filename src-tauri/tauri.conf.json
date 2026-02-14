@@ -38,12 +38,6 @@
   },
   "plugins": {
     "opener": {},
-    "dialog": {
-      "all": true
-    },
-    "fs": {
-      "all": true,
-      "scope": ["**"]
-    }
+    "fs": {}
   }
 }

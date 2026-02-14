@@ -6,10 +6,12 @@ import { useWizard } from '../../contexts/WizardContext';
 export const CompletionStep = () => {
   const { wizardData, goToStep } = useWizard();
 
-  const storeUrl = wizardData.deployment?.url || `https://${wizardData.server.domain}`;
-  const webhookUrl = wizardData.deployment?.webhookUrl || 
-    `https://${wizardData.server.domain}/api/webhooks/mercadopago`;
-  const adminUrl = `${storeUrl}/admin`;
+  const isLocal = wizardData.deploymentType === 'local';
+  const storeUrl = isLocal ? 'http://localhost:9000' : 
+    (wizardData.deployment?.url || `https://${wizardData.server.domain}`);
+  const webhookUrl = isLocal ? 'http://localhost:9000/api/webhooks/mercadopago' :
+    (wizardData.deployment?.webhookUrl || `https://${wizardData.server.domain}/api/webhooks/mercadopago`);
+  const adminUrl = `${storeUrl}/app`;
 
   const handleOpenStore = async () => {
     try {
@@ -187,6 +189,12 @@ export const CompletionStep = () => {
         <div className="mb-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
           <h3 className="font-semibold text-blue-900 mb-3">📝 Próximos Passos</h3>
           <ol className="space-y-2 text-sm text-blue-800">
+            {isLocal && (
+              <li className="flex items-start">
+                <span className="font-bold mr-2">•</span>
+                <span><strong>Container Local:</strong> Sua loja está rodando no container "medusa-project". Use <code>docker logs medusa-project</code> para ver logs.</span>
+              </li>
+            )}
             <li className="flex items-start">
               <span className="font-bold mr-2">1.</span>
               <span>Acesse o painel administrativo e altere a senha padrão</span>
@@ -203,14 +211,24 @@ export const CompletionStep = () => {
               <span className="font-bold mr-2">4.</span>
               <span>Teste o processo de compra completo em modo de teste</span>
             </li>
-            <li className="flex items-start">
-              <span className="font-bold mr-2">5.</span>
-              <span>Configure DNS do domínio para apontar para o servidor (se ainda não fez)</span>
-            </li>
-            <li className="flex items-start">
-              <span className="font-bold mr-2">6.</span>
-              <span>Personalize os e-mails transacionais no painel administrativo</span>
-            </li>
+            {!isLocal && (
+              <>
+                <li className="flex items-start">
+                  <span className="font-bold mr-2">5.</span>
+                  <span>Configure DNS do domínio para apontar para o servidor (se ainda não fez)</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="font-bold mr-2">6.</span>
+                  <span>Personalize os e-mails transacionais no painel administrativo</span>
+                </li>
+              </>
+            )}
+            {isLocal && (
+              <li className="flex items-start">
+                <span className="font-bold mr-2">5.</span>
+                <span>Para parar o container: <code>docker stop medusa-project</code></span>
+              </li>
+            )}
           </ol>
         </div>
 

@@ -36,6 +36,7 @@ src/
 │   └── wizard/
 │       ├── Wizard.jsx (Main container)
 │       ├── WizardStepper.jsx (Progress indicator)
+│       ├── DeploymentTypeStep.jsx (NEW!)
 │       ├── ServerStep.jsx
 │       ├── IdentityStep.jsx
 │       ├── DesignSchoolStep.jsx
@@ -223,7 +224,32 @@ The project is well-structured for contributions:
 - TODO list with priorities
 - Development guide included
 
-## 📝 License
+## � Recent Updates (2026-02-14)
+
+### ✅ Local Container Deployment Support
+- **New Feature**: Added support for local Docker container deployment
+- **DeploymentTypeStep**: New initial step to choose between "Remote Server" or "Local Container"
+- **Container Name**: Uses "medusa-project" as the main container name
+- **No Server Configuration**: Local deployment skips server IP/domain configuration entirely
+- **Modified Components**:
+  - `WizardContext.jsx`: Added `deploymentType` state
+  - `Wizard.jsx`: Dynamic step rendering based on deployment type
+  - `WizardStepper.jsx`: Adaptive step display (skips server step for local)
+  - `DeployStep.jsx`: Passes deployment type to backend, conditionally includes server config
+  - `CompletionStep.jsx`: Shows different URLs and instructions for local vs remote
+- **Backend Changes**:
+  - `lib.rs`: Made `server` field optional in `DeployConfig`
+  - `deployment.rs`: Split deployment logic into `deploy_local()` and `deploy_remote()`
+  - `generate_docker_compose_local()`: Creates docker-compose for local container
+  - Updated `generate_docker_compose()` and `generate_caddyfile()` to handle optional server config
+- **Local Deployment Features**:
+  - Container name: `medusa-project`
+  - URLs: `http://localhost:9000` (store), `http://localhost:9000/app` (admin)
+  - Automatic container management (stop/start existing containers)
+  - No domain/SSL setup required
+  - Simplified CORS for local development
+
+## �📝 License
 
 MIT License - See LICENSE file
 

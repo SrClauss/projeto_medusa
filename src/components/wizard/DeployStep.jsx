@@ -42,7 +42,8 @@ export const DeployStep = () => {
     try {
       const result = await invoke('deploy_store', {
         config: {
-          server: wizardData.server,
+          deploymentType: wizardData.deploymentType,
+          ...(wizardData.deploymentType === 'remote' && { server: wizardData.server }),
           identity: wizardData.identity,
           design: wizardData.design,
           payment: wizardData.payment,

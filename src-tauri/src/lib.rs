@@ -15,7 +15,10 @@ struct ServerConfig {
 
 #[derive(Debug, Serialize, Deserialize)]
 struct DeployConfig {
-    server: ServerConfig,
+    #[serde(rename = "deploymentType")]
+    deployment_type: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    server: Option<ServerConfig>,
     identity: serde_json::Value,
     design: serde_json::Value,
     payment: serde_json::Value,
