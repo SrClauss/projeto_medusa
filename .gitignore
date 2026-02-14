@@ -22,3 +22,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Rust / Tauri
+src-tauri/target
+src-tauri/Cargo.lock
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.dmg
+*.deb
+*.rpm
+*.AppImage
+*.msi
+*.exe
