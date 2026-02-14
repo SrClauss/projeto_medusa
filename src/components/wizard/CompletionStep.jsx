@@ -1,5 +1,26 @@
 import React from 'react';
-import { CheckCircle, ExternalLink, Copy, RefreshCw } from 'lucide-react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Button,
+  Typography,
+  Paper,
+  Stack,
+  Grid,
+  TextField,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+} from '@mui/material';
+import {
+  CheckCircle,
+  OpenInNew as ExternalLinkIcon,
+  ContentCopy as CopyIcon,
+  Refresh as RefreshIcon,
+} from '@mui/icons-material';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { useWizard } from '../../contexts/WizardContext';
 
@@ -45,211 +66,378 @@ export const CompletionStep = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        {/* Success Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
-            <CheckCircle className="w-12 h-12 text-green-500" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">
-            🎉 Loja Implantada com Sucesso!
-          </h2>
-          <p className="text-lg text-gray-600">
-            Sua loja <strong>{wizardData.identity.name}</strong> está online e pronta para vendas!
-          </p>
-        </div>
+    <Box sx={{ maxWidth: 1200, mx: 'auto', py: 4 }}>
+      <Card elevation={2}>
+        <CardContent sx={{ p: 4 }}>
+          <Stack spacing={4}>
+            {/* Success Header */}
+            <Box sx={{ textAlign: 'center' }}>
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 80,
+                  height: 80,
+                  bgcolor: 'success.light',
+                  borderRadius: '50%',
+                  mb: 2,
+                }}
+              >
+                <CheckCircle sx={{ fontSize: 60, color: 'success.main' }} />
+              </Box>
+              <Typography variant="h3" fontWeight="bold" gutterBottom>
+                🎉 Loja Implantada com Sucesso!
+              </Typography>
+              <Typography variant="h6" color="text.secondary">
+                Sua loja <strong>{wizardData.identity.name}</strong> está online e pronta para vendas!
+              </Typography>
+            </Box>
 
-        {/* Store Information */}
-        <div className="space-y-6 mb-8">
-          {/* Store URL */}
-          <div className="p-6 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg">
-            <h3 className="font-semibold text-gray-900 mb-3">🌐 URL da Loja (Frontend)</h3>
-            <div className="flex items-center gap-3">
-              <input
-                type="text"
-                value={storeUrl}
-                readOnly
-                className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-lg font-mono text-sm"
-              />
-              <button
+            {/* Store Information */}
+            <Stack spacing={3}>
+              {/* Store URL */}
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 3,
+                  background: 'linear-gradient(135deg, rgba(33, 150, 243, 0.1) 0%, rgba(156, 39, 176, 0.1) 100%)',
+                  border: 1,
+                  borderColor: 'primary.light',
+                  borderRadius: 2,
+                }}
+              >
+                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                  🌐 URL da Loja (Frontend)
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <TextField
+                    fullWidth
+                    value={storeUrl}
+                    InputProps={{
+                      readOnly: true,
+                      sx: { fontFamily: 'monospace', fontSize: '0.875rem' },
+                    }}
+                    size="small"
+                  />
+                  <Button
+                    variant="contained"
+                    onClick={handleOpenStore}
+                    startIcon={<ExternalLinkIcon />}
+                    sx={{ whiteSpace: 'nowrap' }}
+                  >
+                    Abrir
+                  </Button>
+                  <IconButton
+                    onClick={() => handleCopyToClipboard(storeUrl, 'URL da loja')}
+                    title="Copiar URL"
+                    color="default"
+                  >
+                    <CopyIcon />
+                  </IconButton>
+                </Box>
+              </Paper>
+
+              {/* Admin URL */}
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 3,
+                  background: 'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(233, 30, 99, 0.1) 100%)',
+                  border: 1,
+                  borderColor: 'secondary.light',
+                  borderRadius: 2,
+                }}
+              >
+                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                  🔐 Painel Administrativo (Backend)
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                  <TextField
+                    fullWidth
+                    value={adminUrl}
+                    InputProps={{
+                      readOnly: true,
+                      sx: { fontFamily: 'monospace', fontSize: '0.875rem' },
+                    }}
+                    size="small"
+                  />
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleOpenAdmin}
+                    startIcon={<ExternalLinkIcon />}
+                    sx={{ whiteSpace: 'nowrap' }}
+                  >
+                    Abrir
+                  </Button>
+                  <IconButton
+                    onClick={() => handleCopyToClipboard(adminUrl, 'URL do admin')}
+                    title="Copiar URL"
+                    color="default"
+                  >
+                    <CopyIcon />
+                  </IconButton>
+                </Box>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: 2,
+                    bgcolor: 'background.paper',
+                    border: 1,
+                    borderColor: 'divider',
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    <strong>Credenciais padrão:</strong> admin@medusa-test.com / supersecret
+                  </Typography>
+                  <Typography variant="body2" color="warning.main" sx={{ mt: 1 }}>
+                    ⚠️ Altere a senha ao fazer o primeiro login!
+                  </Typography>
+                </Paper>
+              </Paper>
+
+              {/* Webhook URL */}
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 3,
+                  background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(0, 200, 83, 0.1) 100%)',
+                  border: 1,
+                  borderColor: 'success.light',
+                  borderRadius: 2,
+                }}
+              >
+                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                  🔗 Webhook do Mercado Pago
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  Configure esta URL no painel do Mercado Pago para receber notificações de pagamento:
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                  <TextField
+                    fullWidth
+                    value={webhookUrl}
+                    InputProps={{
+                      readOnly: true,
+                      sx: { fontFamily: 'monospace', fontSize: '0.875rem' },
+                    }}
+                    size="small"
+                  />
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => window.open('https://www.mercadopago.com.br/developers/panel/webhooks', '_blank')}
+                    startIcon={<ExternalLinkIcon />}
+                    sx={{ whiteSpace: 'nowrap' }}
+                  >
+                    Configurar
+                  </Button>
+                  <IconButton
+                    onClick={() => handleCopyToClipboard(webhookUrl, 'Webhook URL')}
+                    title="Copiar URL"
+                    color="default"
+                  >
+                    <CopyIcon />
+                  </IconButton>
+                </Box>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: 2,
+                    bgcolor: 'background.paper',
+                    border: 1,
+                    borderColor: 'success.light',
+                  }}
+                >
+                  <Typography variant="body2" fontWeight="bold" gutterBottom>
+                    Eventos a configurar:
+                  </Typography>
+                  <List dense>
+                    <ListItem sx={{ py: 0 }}>
+                      <ListItemText 
+                        primary="• payment.created"
+                        primaryTypographyProps={{ variant: 'caption' }}
+                      />
+                    </ListItem>
+                    <ListItem sx={{ py: 0 }}>
+                      <ListItemText 
+                        primary="• payment.updated"
+                        primaryTypographyProps={{ variant: 'caption' }}
+                      />
+                    </ListItem>
+                    <ListItem sx={{ py: 0 }}>
+                      <ListItemText 
+                        primary="• merchant_order.updated"
+                        primaryTypographyProps={{ variant: 'caption' }}
+                      />
+                    </ListItem>
+                  </List>
+                </Paper>
+              </Paper>
+            </Stack>
+
+            {/* Summary */}
+            <Paper 
+              elevation={0} 
+              sx={{ 
+                p: 3, 
+                bgcolor: 'grey.50',
+                border: 1,
+                borderColor: 'divider',
+                borderRadius: 2,
+              }}
+            >
+              <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 3 }}>
+                📊 Resumo da Implantação
+              </Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={6} md={3}>
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    Produtos
+                  </Typography>
+                  <Typography variant="h4" fontWeight="bold">
+                    {wizardData.products.csvData.length}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6} md={3}>
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    Imagens
+                  </Typography>
+                  <Typography variant="h4" fontWeight="bold">
+                    {wizardData.images.mapping?.totalImages || 0}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6} md={3}>
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    Design
+                  </Typography>
+                  <Typography variant="h6" fontWeight="bold" sx={{ textTransform: 'capitalize' }}>
+                    {wizardData.design.school}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6} md={3}>
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    Pagamento
+                  </Typography>
+                  <Typography variant="h6" fontWeight="bold">
+                    Mercado Pago
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Paper>
+
+            {/* Next Steps */}
+            <Paper 
+              elevation={0} 
+              sx={{ 
+                p: 3, 
+                bgcolor: 'info.light',
+                border: 1,
+                borderColor: 'info.light',
+                borderRadius: 2,
+              }}
+            >
+              <Typography variant="subtitle1" fontWeight="bold" color="info.dark" gutterBottom>
+                📝 Próximos Passos
+              </Typography>
+              <List>
+                {isLocal && (
+                  <ListItem>
+                    <ListItemText
+                      primary="• Container Local: Sua loja está rodando no container 'medusa-project'. Use docker logs medusa-project para ver logs."
+                      primaryTypographyProps={{ variant: 'body2', color: 'info.dark' }}
+                    />
+                  </ListItem>
+                )}
+                <ListItem>
+                  <ListItemText
+                    primary="1. Acesse o painel administrativo e altere a senha padrão"
+                    primaryTypographyProps={{ variant: 'body2', color: 'info.dark' }}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="2. Configure o webhook no painel do Mercado Pago"
+                    primaryTypographyProps={{ variant: 'body2', color: 'info.dark' }}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="3. Verifique os produtos e ajuste as informações se necessário"
+                    primaryTypographyProps={{ variant: 'body2', color: 'info.dark' }}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="4. Teste o processo de compra completo em modo de teste"
+                    primaryTypographyProps={{ variant: 'body2', color: 'info.dark' }}
+                  />
+                </ListItem>
+                {!isLocal && (
+                  <>
+                    <ListItem>
+                      <ListItemText
+                        primary="5. Configure DNS do domínio para apontar para o servidor (se ainda não fez)"
+                        primaryTypographyProps={{ variant: 'body2', color: 'info.dark' }}
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="6. Personalize os e-mails transacionais no painel administrativo"
+                        primaryTypographyProps={{ variant: 'body2', color: 'info.dark' }}
+                      />
+                    </ListItem>
+                  </>
+                )}
+                {isLocal && (
+                  <ListItem>
+                    <ListItemText
+                      primary="5. Para parar o container: docker stop medusa-project"
+                      primaryTypographyProps={{ variant: 'body2', color: 'info.dark' }}
+                    />
+                  </ListItem>
+                )}
+              </List>
+            </Paper>
+
+            {/* Actions */}
+            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
                 onClick={handleOpenStore}
-                className="px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center whitespace-nowrap"
+                startIcon={<ExternalLinkIcon />}
+                sx={{
+                  px: 6,
+                  py: 2,
+                  fontWeight: 'bold',
+                  boxShadow: 3,
+                  '&:hover': {
+                    boxShadow: 6,
+                  },
+                }}
               >
-                <ExternalLink className="w-5 h-5 mr-2" />
-                Abrir
-              </button>
-              <button
-                onClick={() => handleCopyToClipboard(storeUrl, 'URL da loja')}
-                className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-                title="Copiar URL"
+                Visitar Loja
+              </Button>
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={handleStartNew}
+                startIcon={<RefreshIcon />}
+                sx={{
+                  px: 6,
+                  py: 2,
+                  fontWeight: 'bold',
+                }}
               >
-                <Copy className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-
-          {/* Admin URL */}
-          <div className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg">
-            <h3 className="font-semibold text-gray-900 mb-3">🔐 Painel Administrativo (Backend)</h3>
-            <div className="flex items-center gap-3">
-              <input
-                type="text"
-                value={adminUrl}
-                readOnly
-                className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-lg font-mono text-sm"
-              />
-              <button
-                onClick={handleOpenAdmin}
-                className="px-4 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 flex items-center whitespace-nowrap"
-              >
-                <ExternalLink className="w-5 h-5 mr-2" />
-                Abrir
-              </button>
-              <button
-                onClick={() => handleCopyToClipboard(adminUrl, 'URL do admin')}
-                className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-                title="Copiar URL"
-              >
-                <Copy className="w-5 h-5" />
-              </button>
-            </div>
-            <p className="text-sm text-purple-700 mt-2">
-              <strong>Credenciais padrão:</strong> admin@medusa-test.com / supersecret
-              <br />
-              ⚠️ Altere a senha ao fazer o primeiro login!
-            </p>
-          </div>
-
-          {/* Webhook URL */}
-          <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg">
-            <h3 className="font-semibold text-gray-900 mb-3">🔗 Webhook do Mercado Pago</h3>
-            <p className="text-sm text-green-800 mb-3">
-              Configure esta URL no painel do Mercado Pago para receber notificações de pagamento:
-            </p>
-            <div className="flex items-center gap-3">
-              <input
-                type="text"
-                value={webhookUrl}
-                readOnly
-                className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-lg font-mono text-sm"
-              />
-              <button
-                onClick={() => window.open('https://www.mercadopago.com.br/developers/panel/webhooks', '_blank')}
-                className="px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 flex items-center whitespace-nowrap"
-              >
-                <ExternalLink className="w-5 h-5 mr-2" />
-                Configurar
-              </button>
-              <button
-                onClick={() => handleCopyToClipboard(webhookUrl, 'Webhook URL')}
-                className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-                title="Copiar URL"
-              >
-                <Copy className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="mt-3 p-3 bg-white rounded border border-green-300">
-              <p className="text-sm text-gray-700 mb-2"><strong>Eventos a configurar:</strong></p>
-              <ul className="text-xs text-gray-600 space-y-1">
-                <li>• payment.created</li>
-                <li>• payment.updated</li>
-                <li>• merchant_order.updated</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Summary */}
-        <div className="mb-8 p-6 bg-gray-50 border border-gray-200 rounded-lg">
-          <h3 className="font-semibold text-gray-900 mb-4">📊 Resumo da Implantação</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <div>
-              <p className="text-gray-500 mb-1">Produtos</p>
-              <p className="text-2xl font-bold text-gray-900">{wizardData.products.csvData.length}</p>
-            </div>
-            <div>
-              <p className="text-gray-500 mb-1">Imagens</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {wizardData.images.mapping?.totalImages || 0}
-              </p>
-            </div>
-            <div>
-              <p className="text-gray-500 mb-1">Design</p>
-              <p className="text-lg font-bold text-gray-900 capitalize">{wizardData.design.school}</p>
-            </div>
-            <div>
-              <p className="text-gray-500 mb-1">Pagamento</p>
-              <p className="text-lg font-bold text-gray-900">Mercado Pago</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Next Steps */}
-        <div className="mb-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
-          <h3 className="font-semibold text-blue-900 mb-3">📝 Próximos Passos</h3>
-          <ol className="space-y-2 text-sm text-blue-800">
-            {isLocal && (
-              <li className="flex items-start">
-                <span className="font-bold mr-2">•</span>
-                <span><strong>Container Local:</strong> Sua loja está rodando no container "medusa-project". Use <code>docker logs medusa-project</code> para ver logs.</span>
-              </li>
-            )}
-            <li className="flex items-start">
-              <span className="font-bold mr-2">1.</span>
-              <span>Acesse o painel administrativo e altere a senha padrão</span>
-            </li>
-            <li className="flex items-start">
-              <span className="font-bold mr-2">2.</span>
-              <span>Configure o webhook no painel do Mercado Pago</span>
-            </li>
-            <li className="flex items-start">
-              <span className="font-bold mr-2">3.</span>
-              <span>Verifique os produtos e ajuste as informações se necessário</span>
-            </li>
-            <li className="flex items-start">
-              <span className="font-bold mr-2">4.</span>
-              <span>Teste o processo de compra completo em modo de teste</span>
-            </li>
-            {!isLocal && (
-              <>
-                <li className="flex items-start">
-                  <span className="font-bold mr-2">5.</span>
-                  <span>Configure DNS do domínio para apontar para o servidor (se ainda não fez)</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="font-bold mr-2">6.</span>
-                  <span>Personalize os e-mails transacionais no painel administrativo</span>
-                </li>
-              </>
-            )}
-            {isLocal && (
-              <li className="flex items-start">
-                <span className="font-bold mr-2">5.</span>
-                <span>Para parar o container: <code>docker stop medusa-project</code></span>
-              </li>
-            )}
-          </ol>
-        </div>
-
-        {/* Actions */}
-        <div className="flex gap-4 justify-center">
-          <button
-            onClick={handleOpenStore}
-            className="px-8 py-4 bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 flex items-center shadow-lg hover:shadow-xl transition-all"
-          >
-            <ExternalLink className="w-5 h-5 mr-2" />
-            Visitar Loja
-          </button>
-          <button
-            onClick={handleStartNew}
-            className="px-8 py-4 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 flex items-center"
-          >
-            <RefreshCw className="w-5 h-5 mr-2" />
-            Nova Implantação
-          </button>
-        </div>
-      </div>
-    </div>
+                Nova Implantação
+              </Button>
+            </Box>
+          </Stack>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
