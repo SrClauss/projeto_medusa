@@ -7,33 +7,39 @@ export const theme = createTheme({
     primary: {
       main: '#6366f1', // Indigo
       light: '#818cf8',
+      lighter: '#c7d2fe',
       dark: '#4f46e5',
       contrastText: '#ffffff',
     },
     secondary: {
       main: '#8b5cf6', // Purple
       light: '#a78bfa',
+      lighter: '#ddd6fe',
       dark: '#7c3aed',
       contrastText: '#ffffff',
     },
     success: {
       main: '#10b981',
       light: '#34d399',
+      lighter: '#d1fae5',
       dark: '#059669',
     },
     error: {
       main: '#ef4444',
       light: '#f87171',
+      lighter: '#fee2e2',
       dark: '#dc2626',
     },
     warning: {
       main: '#f59e0b',
       light: '#fbbf24',
+      lighter: '#fef3c7',
       dark: '#d97706',
     },
     info: {
       main: '#3b82f6',
       light: '#60a5fa',
+      lighter: '#dbeafe',
       dark: '#2563eb',
     },
     background: {
@@ -98,25 +104,6 @@ export const theme = createTheme({
     '0px 8px 16px rgba(0,0,0,0.10)',
     '0px 12px 24px rgba(0,0,0,0.12)',
     '0px 16px 32px rgba(0,0,0,0.14)',
-    '0px 20px 40px rgba(0,0,0,0.16)',
-    '0px 24px 48px rgba(0,0,0,0.18)',
-    '0px 28px 56px rgba(0,0,0,0.20)',
-    '0px 32px 64px rgba(0,0,0,0.22)',
-    '0px 36px 72px rgba(0,0,0,0.24)',
-    '0px 40px 80px rgba(0,0,0,0.26)',
-    '0px 44px 88px rgba(0,0,0,0.28)',
-    '0px 48px 96px rgba(0,0,0,0.30)',
-    '0px 52px 104px rgba(0,0,0,0.32)',
-    '0px 56px 112px rgba(0,0,0,0.34)',
-    '0px 60px 120px rgba(0,0,0,0.36)',
-    '0px 64px 128px rgba(0,0,0,0.38)',
-    '0px 68px 136px rgba(0,0,0,0.40)',
-    '0px 72px 144px rgba(0,0,0,0.42)',
-    '0px 76px 152px rgba(0,0,0,0.44)',
-    '0px 80px 160px rgba(0,0,0,0.46)',
-    '0px 84px 168px rgba(0,0,0,0.48)',
-    '0px 88px 176px rgba(0,0,0,0.50)',
-    '0px 92px 184px rgba(0,0,0,0.52)',
   ],
   components: {
     MuiButton: {

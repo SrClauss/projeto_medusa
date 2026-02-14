@@ -92,9 +92,9 @@ export const ImagesStep = () => {
               elevation={0} 
               sx={{ 
                 p: 3, 
-                bgcolor: 'info.light',
+                bgcolor: 'info.lighter',
                 border: 1,
-                borderColor: 'info.light',
+                borderColor: 'info.main',
                 borderRadius: 2,
               }}
             >
