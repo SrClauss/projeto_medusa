@@ -29,6 +29,11 @@ export const WizardProvider = ({ children }) => {
       backgroundColor: '#ffffff',
       fontPair: 'Inter + Roboto',
     },
+    payment: {
+      mercadoPagoToken: '',
+      webhookSecret: '',
+      testMode: true,
+    },
     products: {
       csvData: [],
       csvFile: null,

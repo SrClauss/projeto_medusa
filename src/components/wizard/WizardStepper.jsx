@@ -6,10 +6,11 @@ const STEPS = [
   { id: 1, title: 'Identidade', description: 'Nome e slogan da loja' },
   { id: 2, title: 'Design', description: 'Escola de design' },
   { id: 3, title: 'Tema', description: 'Cores e tipografia' },
-  { id: 4, title: 'Produtos', description: 'Upload CSV' },
-  { id: 5, title: 'Imagens', description: 'Assets de produtos' },
-  { id: 6, title: 'Deploy', description: 'Implantação' },
-  { id: 7, title: 'Concluído', description: 'Loja pronta' },
+  { id: 4, title: 'Pagamento', description: 'Mercado Pago' },
+  { id: 5, title: 'Produtos', description: 'Upload CSV' },
+  { id: 6, title: 'Imagens', description: 'Assets de produtos' },
+  { id: 7, title: 'Deploy', description: 'Implantação' },
+  { id: 8, title: 'Concluído', description: 'Loja pronta' },
 ];
 
 export const WizardStepper = ({ currentStep }) => {
