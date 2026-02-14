@@ -1,5 +1,24 @@
 import React from 'react';
-import { FileText, ChevronRight, RotateCcw, Download, Upload } from 'lucide-react';
+import { 
+  Box,
+  Card,
+  CardContent,
+  Button,
+  Typography,
+  Chip,
+  Alert,
+  AlertTitle,
+  Stack,
+  IconButton,
+  Tooltip,
+} from '@mui/material';
+import { 
+  Description as FileTextIcon, 
+  ChevronRight, 
+  Refresh as RotateCcwIcon, 
+  Download as DownloadIcon, 
+  Upload as UploadIcon 
+} from '@mui/icons-material';
 import { useWizard } from '../../contexts/WizardContext';
 
 export const YamlNavigator = () => {
@@ -14,100 +33,149 @@ export const YamlNavigator = () => {
 
   if (!hasSavedState || yamlSteps.length === 0) {
     return (
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-        <div className="flex items-center text-blue-800">
-          <FileText className="w-5 h-5 mr-2" />
-          <span className="text-sm font-medium">Nenhum progresso salvo em YAML</span>
-        </div>
-        <p className="text-xs text-blue-600 mt-1">
-          Os passos serão automaticamente salvos em YAML conforme você avança no wizard.
-        </p>
-      </div>
+      <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
+        <AlertTitle sx={{ display: 'flex', alignItems: 'center' }}>
+          <FileTextIcon sx={{ mr: 1, fontSize: 20 }} />
+          Nenhum progresso salvo em YAML
+        </AlertTitle>
+        Os passos serão automaticamente salvos em YAML conforme você avança no wizard.
+      </Alert>
     );
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
-          <FileText className="w-5 h-5 text-blue-500 mr-2" />
-          <h3 className="text-lg font-semibold text-gray-800">Navegação YAML</h3>
-        </div>
-        <div className="flex gap-2">
-          <button
-            onClick={loadFromYaml}
-            className="px-3 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600 flex items-center"
-            title="Recarregar do YAML"
-          >
-            <Upload className="w-3 h-3 mr-1" />
-            Carregar
-          </button>
-          <button
-            onClick={resetWizard}
-            className="px-3 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 flex items-center"
-            title="Resetar wizard"
-          >
-            <RotateCcw className="w-3 h-3 mr-1" />
-            Reset
-          </button>
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        {yamlSteps.map((step, index) => (
-          <div
-            key={step.id}
-            className={`flex items-center justify-between p-3 rounded-lg border transition-all cursor-pointer ${
-              step.id === currentStep
-                ? 'bg-blue-50 border-blue-300'
-                : step.completed
-                ? 'bg-green-50 border-green-200 hover:bg-green-100'
-                : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
-            }`}
-            onClick={() => navigateToYamlStep(step.id)}
-          >
-            <div className="flex items-center">
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium mr-3 ${
-                  step.id === currentStep
-                    ? 'bg-blue-500 text-white'
-                    : step.completed
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-300 text-gray-600'
-                }`}
+    <Card elevation={1} sx={{ mb: 3 }}>
+      <CardContent>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <FileTextIcon sx={{ color: 'info.main', mr: 1 }} />
+            <Typography variant="h6" fontWeight="bold">
+              Navegação YAML
+            </Typography>
+          </Box>
+          <Stack direction="row" spacing={1}>
+            <Tooltip title="Recarregar do YAML">
+              <Button
+                size="small"
+                variant="contained"
+                color="success"
+                onClick={loadFromYaml}
+                startIcon={<UploadIcon />}
               >
-                {step.id + 1}
-              </div>
-              <div>
-                <p className={`font-medium ${step.id === currentStep ? 'text-blue-800' : 'text-gray-800'}`}>
-                  {step.name}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {step.completed ? 'Concluído' : 'Pendente'}
-                </p>
-              </div>
-            </div>
+                Carregar
+              </Button>
+            </Tooltip>
+            <Tooltip title="Resetar wizard">
+              <Button
+                size="small"
+                variant="contained"
+                color="error"
+                onClick={resetWizard}
+                startIcon={<RotateCcwIcon />}
+              >
+                Reset
+              </Button>
+            </Tooltip>
+          </Stack>
+        </Box>
 
-            <div className="flex items-center">
-              {step.id === currentStep && (
-                <span className="text-xs text-blue-600 font-medium mr-2">Atual</span>
-              )}
-              <ChevronRight className={`w-4 h-4 ${step.id === currentStep ? 'text-blue-500' : 'text-gray-400'}`} />
-            </div>
-          </div>
-        ))}
-      </div>
+        <Stack spacing={1.5}>
+          {yamlSteps.map((step, index) => (
+            <Card
+              key={step.id}
+              variant="outlined"
+              sx={{
+                cursor: 'pointer',
+                border: 1,
+                borderColor: step.id === currentStep 
+                  ? 'info.main'
+                  : step.completed 
+                  ? 'success.main'
+                  : 'divider',
+                bgcolor: step.id === currentStep 
+                  ? 'info.lighter'
+                  : step.completed 
+                  ? 'success.lighter'
+                  : 'background.paper',
+                transition: 'all 0.2s',
+                '&:hover': {
+                  boxShadow: 2,
+                },
+              }}
+              onClick={() => navigateToYamlStep(step.id)}
+            >
+              <CardContent sx={{ 
+                p: 2, 
+                '&:last-child': { pb: 2 },
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box
+                    sx={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mr: 2,
+                      bgcolor: step.id === currentStep 
+                        ? 'info.main'
+                        : step.completed 
+                        ? 'success.main'
+                        : 'grey.400',
+                      color: 'white',
+                      fontWeight: 'bold',
+                      fontSize: '0.875rem',
+                    }}
+                  >
+                    {step.id + 1}
+                  </Box>
+                  <Box>
+                    <Typography 
+                      variant="body1" 
+                      fontWeight="bold"
+                      color={step.id === currentStep ? 'info.dark' : 'text.primary'}
+                    >
+                      {step.name}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {step.completed ? 'Concluído' : 'Pendente'}
+                    </Typography>
+                  </Box>
+                </Box>
 
-      <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-        <p className="text-xs text-gray-600">
-          <strong>Arquivo:</strong> <code className="bg-white px-1 py-0.5 rounded text-xs">medusa-wizard.yml</code>
-          <br />
-          <strong>Local:</strong> Pasta de documentos do sistema
-        </p>
-        <p className="text-xs text-gray-500 mt-1">
-          O progresso é automaticamente salvo em YAML. Você pode navegar livremente entre os passos usando os botões acima.
-        </p>
-      </div>
-    </div>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  {step.id === currentStep && (
+                    <Chip 
+                      label="Atual" 
+                      size="small" 
+                      color="info"
+                    />
+                  )}
+                  <ChevronRight 
+                    sx={{ 
+                      color: step.id === currentStep ? 'info.main' : 'grey.400' 
+                    }} 
+                  />
+                </Box>
+              </CardContent>
+            </Card>
+          ))}
+        </Stack>
+
+        <Alert severity="info" variant="outlined" sx={{ mt: 2 }}>
+          <AlertTitle sx={{ fontSize: '0.875rem', fontWeight: 'bold' }}>
+            Arquivo: <code>medusa-wizard.yml</code>
+          </AlertTitle>
+          <Typography variant="caption">
+            <strong>Local:</strong> Pasta de documentos do sistema<br/>
+            O progresso é automaticamente salvo em YAML. Você pode navegar livremente entre os passos.
+          </Typography>
+        </Alert>
+      </CardContent>
+    </Card>
   );
 };

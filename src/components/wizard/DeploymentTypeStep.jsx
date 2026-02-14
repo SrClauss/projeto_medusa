@@ -1,5 +1,24 @@
 import React from 'react';
-import { Server, Container, ArrowRight } from 'lucide-react';
+import { 
+  Box,
+  Card,
+  CardContent,
+  CardActionArea,
+  Button,
+  Typography,
+  Grid,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Stack,
+} from '@mui/material';
+import { 
+  Storage as ServerIcon, 
+  Computer as ContainerIcon, 
+  ArrowForward,
+  CheckCircle,
+} from '@mui/icons-material';
 import { useWizard } from '../../contexts/WizardContext';
 
 export const DeploymentTypeStep = () => {
@@ -11,76 +30,176 @@ export const DeploymentTypeStep = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Escolha o Tipo de Implantação</h2>
-          <p className="text-gray-600">
-            Como você gostaria de implantar sua loja Medusa?
-          </p>
-        </div>
+    <Box sx={{ maxWidth: 900, mx: 'auto', py: 4 }}>
+      <Card elevation={2}>
+        <CardContent sx={{ p: 4 }}>
+          <Stack spacing={4}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h3" component="h2" fontWeight="bold" gutterBottom>
+                Escolha o Tipo de Implantação
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Como você gostaria de implantar sua loja Medusa?
+              </Typography>
+            </Box>
 
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          {/* Opção Servidor Remoto */}
-          <div
-            onClick={() => handleSelectType('remote')}
-            className={`border-2 rounded-lg p-6 cursor-pointer transition-all hover:shadow-lg ${
-              wizardData.deploymentType === 'remote'
-                ? 'border-blue-500 bg-blue-50'
-                : 'border-gray-200 hover:border-blue-300'
-            }`}
-          >
-            <div className="flex items-center mb-4">
-              <Server className="w-8 h-8 text-blue-500 mr-3" />
-              <h3 className="text-xl font-semibold text-gray-800">Servidor Remoto</h3>
-            </div>
-            <p className="text-gray-600 mb-4">
-              Implante em um servidor Linux remoto via SSH. Ideal para produção com domínio personalizado.
-            </p>
-            <ul className="text-sm text-gray-500 space-y-1">
-              <li>• Conexão SSH automática</li>
-              <li>• SSL automático (Let's Encrypt)</li>
-              <li>• Domínio personalizado</li>
-              <li>• Infraestrutura completa</li>
-            </ul>
-          </div>
+            <Grid container spacing={3}>
+              {/* Opção Servidor Remoto */}
+              <Grid item xs={12} md={6}>
+                <Card 
+                  elevation={wizardData.deploymentType === 'remote' ? 4 : 1}
+                  sx={{
+                    height: '100%',
+                    border: 2,
+                    borderColor: wizardData.deploymentType === 'remote' 
+                      ? 'info.main' 
+                      : 'transparent',
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  <CardActionArea 
+                    onClick={() => handleSelectType('remote')}
+                    sx={{ height: '100%' }}
+                  >
+                    <CardContent sx={{ p: 3 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        <ServerIcon sx={{ fontSize: 40, color: 'info.main', mr: 2 }} />
+                        <Typography variant="h5" fontWeight="bold">
+                          Servidor Remoto
+                        </Typography>
+                      </Box>
+                      <Typography variant="body2" color="text.secondary" paragraph>
+                        Implante em um servidor Linux remoto via SSH. Ideal para produção com domínio personalizado.
+                      </Typography>
+                      <List dense>
+                        <ListItem>
+                          <ListItemIcon sx={{ minWidth: 32 }}>
+                            <CheckCircle fontSize="small" color="info" />
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary="Conexão SSH automática"
+                            primaryTypographyProps={{ variant: 'body2' }}
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemIcon sx={{ minWidth: 32 }}>
+                            <CheckCircle fontSize="small" color="info" />
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary="SSL automático (Let's Encrypt)"
+                            primaryTypographyProps={{ variant: 'body2' }}
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemIcon sx={{ minWidth: 32 }}>
+                            <CheckCircle fontSize="small" color="info" />
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary="Domínio personalizado"
+                            primaryTypographyProps={{ variant: 'body2' }}
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemIcon sx={{ minWidth: 32 }}>
+                            <CheckCircle fontSize="small" color="info" />
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary="Infraestrutura completa"
+                            primaryTypographyProps={{ variant: 'body2' }}
+                          />
+                        </ListItem>
+                      </List>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
 
-          {/* Opção Container Local */}
-          <div
-            onClick={() => handleSelectType('local')}
-            className={`border-2 rounded-lg p-6 cursor-pointer transition-all hover:shadow-lg ${
-              wizardData.deploymentType === 'local'
-                ? 'border-green-500 bg-green-50'
-                : 'border-gray-200 hover:border-green-300'
-            }`}
-          >
-            <div className="flex items-center mb-4">
-              <Container className="w-8 h-8 text-green-500 mr-3" />
-              <h3 className="text-xl font-semibold text-gray-800">Container Local</h3>
-            </div>
-            <p className="text-gray-600 mb-4">
-              Execute localmente em um container Docker. <strong>Perfeito para testes e desenvolvimento</strong> - sem necessidade de configurar servidor ou domínio.
-            </p>
-            <ul className="text-sm text-gray-500 space-y-1">
-              <li>• Container "medusa-project"</li>
-              <li>• Acesso via localhost</li>
-              <li>• Configuração rápida</li>
-              <li>• <strong>Sem servidor remoto</strong></li>
-            </ul>
-          </div>
-        </div>
+              {/* Opção Container Local */}
+              <Grid item xs={12} md={6}>
+                <Card 
+                  elevation={wizardData.deploymentType === 'local' ? 4 : 1}
+                  sx={{
+                    height: '100%',
+                    border: 2,
+                    borderColor: wizardData.deploymentType === 'local' 
+                      ? 'success.main' 
+                      : 'transparent',
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  <CardActionArea 
+                    onClick={() => handleSelectType('local')}
+                    sx={{ height: '100%' }}
+                  >
+                    <CardContent sx={{ p: 3 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        <ContainerIcon sx={{ fontSize: 40, color: 'success.main', mr: 2 }} />
+                        <Typography variant="h5" fontWeight="bold">
+                          Container Local
+                        </Typography>
+                      </Box>
+                      <Typography variant="body2" color="text.secondary" paragraph>
+                        Execute localmente em um container Docker. <strong>Perfeito para testes e desenvolvimento</strong> - sem necessidade de configurar servidor ou domínio.
+                      </Typography>
+                      <List dense>
+                        <ListItem>
+                          <ListItemIcon sx={{ minWidth: 32 }}>
+                            <CheckCircle fontSize="small" color="success" />
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary='Container "medusa-project"'
+                            primaryTypographyProps={{ variant: 'body2' }}
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemIcon sx={{ minWidth: 32 }}>
+                            <CheckCircle fontSize="small" color="success" />
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary="Acesso via localhost"
+                            primaryTypographyProps={{ variant: 'body2' }}
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemIcon sx={{ minWidth: 32 }}>
+                            <CheckCircle fontSize="small" color="success" />
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary="Configuração rápida"
+                            primaryTypographyProps={{ variant: 'body2' }}
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemIcon sx={{ minWidth: 32 }}>
+                            <CheckCircle fontSize="small" color="success" />
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary={<strong>Sem servidor remoto</strong>}
+                            primaryTypographyProps={{ variant: 'body2' }}
+                          />
+                        </ListItem>
+                      </List>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            </Grid>
 
-        <div className="text-center">
-          <button
-            onClick={nextStep}
-            disabled={!wizardData.deploymentType}
-            className="px-8 py-3 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center mx-auto"
-          >
-            Continuar
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </button>
-        </div>
-      </div>
-    </div>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={nextStep}
+                disabled={!wizardData.deploymentType}
+                endIcon={<ArrowForward />}
+                sx={{ minWidth: 200 }}
+              >
+                Continuar
+              </Button>
+            </Box>
+          </Stack>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
