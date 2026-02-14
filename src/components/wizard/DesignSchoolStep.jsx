@@ -1,5 +1,21 @@
 import React from 'react';
-import { Palette, ArrowRight, ArrowLeft, Check } from 'lucide-react';
+import { 
+  Box,
+  Card,
+  CardContent,
+  CardActionArea,
+  Button,
+  Typography,
+  Grid,
+  Stack,
+  Chip,
+} from '@mui/material';
+import { 
+  Palette as PaletteIcon, 
+  ArrowForward, 
+  ArrowBack, 
+  CheckCircle 
+} from '@mui/icons-material';
 import { useWizard } from '../../contexts/WizardContext';
 
 const DESIGN_SCHOOLS = [
@@ -90,75 +106,112 @@ export const DesignSchoolStep = () => {
   const canContinue = wizardData.design.school !== null;
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <div className="flex items-center mb-6">
-          <Palette className="w-8 h-8 text-pink-500 mr-3" />
-          <h2 className="text-2xl font-bold text-gray-800">Escola de Design</h2>
-        </div>
-        
-        <p className="text-gray-600 mb-8">
-          Escolha uma escola de design visual para sua loja. Você poderá personalizar
-          cores e tipografia na próxima etapa.
-        </p>
+    <Box sx={{ py: 4 }}>
+      <Card elevation={2}>
+        <CardContent sx={{ p: 4 }}>
+          <Stack spacing={3}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <PaletteIcon sx={{ fontSize: 40, color: 'error.main' }} />
+              <Typography variant="h4" component="h2" fontWeight="bold">
+                Escola de Design
+              </Typography>
+            </Box>
+            
+            <Typography variant="body1" color="text.secondary">
+              Escolha uma escola de design visual para sua loja. Você poderá personalizar
+              cores e tipografia na próxima etapa.
+            </Typography>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {DESIGN_SCHOOLS.map((school) => (
-            <button
-              key={school.id}
-              onClick={() => handleSelectSchool(school)}
-              className={`relative p-6 rounded-lg border-2 transition-all text-left hover:shadow-lg ${
-                wizardData.design.school === school.id
-                  ? 'border-pink-500 bg-pink-50'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
-            >
-              {wizardData.design.school === school.id && (
-                <div className="absolute top-3 right-3 w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center">
-                  <Check size={16} className="text-white" />
-                </div>
-              )}
-              
-              <div
-                className="w-full h-32 rounded-lg mb-4"
-                style={{ background: school.preview }}
-              />
-              
-              <h3 className="font-bold text-lg text-gray-900 mb-2">{school.name}</h3>
-              <p className="text-sm text-gray-600 mb-3">{school.description}</p>
-              
-              <div className="flex gap-2">
-                {school.colors.map((color, i) => (
-                  <div
-                    key={i}
-                    className="w-8 h-8 rounded border border-gray-300"
-                    style={{ backgroundColor: color }}
-                    title={color}
-                  />
-                ))}
-              </div>
-            </button>
-          ))}
-        </div>
+            <Grid container spacing={3} sx={{ mt: 1 }}>
+              {DESIGN_SCHOOLS.map((school) => (
+                <Grid item xs={12} sm={6} md={4} key={school.id}>
+                  <Card 
+                    elevation={wizardData.design.school === school.id ? 4 : 1}
+                    sx={{
+                      height: '100%',
+                      border: 2,
+                      borderColor: wizardData.design.school === school.id 
+                        ? 'error.main' 
+                        : 'transparent',
+                      transition: 'all 0.3s ease',
+                      position: 'relative',
+                    }}
+                  >
+                    <CardActionArea onClick={() => handleSelectSchool(school)}>
+                      <Box
+                        sx={{
+                          height: 140,
+                          background: school.preview,
+                          position: 'relative',
+                        }}
+                      >
+                        {wizardData.design.school === school.id && (
+                          <CheckCircle 
+                            sx={{ 
+                              position: 'absolute',
+                              top: 12,
+                              right: 12,
+                              fontSize: 32,
+                              color: 'error.main',
+                              bgcolor: 'white',
+                              borderRadius: '50%',
+                            }} 
+                          />
+                        )}
+                      </Box>
+                      <CardContent>
+                        <Typography variant="h6" fontWeight="bold" gutterBottom>
+                          {school.name}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" paragraph>
+                          {school.description}
+                        </Typography>
+                        <Stack direction="row" spacing={1}>
+                          {school.colors.map((color, i) => (
+                            <Box
+                              key={i}
+                              sx={{
+                                width: 32,
+                                height: 32,
+                                borderRadius: 1,
+                                bgcolor: color,
+                                border: 1,
+                                borderColor: 'divider',
+                              }}
+                              title={color}
+                            />
+                          ))}
+                        </Stack>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
 
-        <div className="mt-8 flex justify-between">
-          <button
-            onClick={prevStep}
-            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 flex items-center"
-          >
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Voltar
-          </button>
-          <button
-            onClick={nextStep}
-            disabled={!canContinue}
-            className="px-6 py-3 bg-pink-500 text-white rounded-lg font-medium hover:bg-pink-600 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center"
-          >
-            Continuar
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </button>
-        </div>
-      </div>
-    </div>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={prevStep}
+                startIcon={<ArrowBack />}
+              >
+                Voltar
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={nextStep}
+                disabled={!canContinue}
+                endIcon={<ArrowForward />}
+                color="error"
+              >
+                Continuar
+              </Button>
+            </Box>
+          </Stack>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
