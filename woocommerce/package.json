@@ -1,0 +1,37 @@
+{
+  "name": "medusa-woocommerce-wizard",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "WooCommerce deployment wizard - WordPress e-commerce made easy",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.8",
+    "@mui/material": "^7.3.8",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-dialog": "^2.6.0",
+    "@tauri-apps/plugin-fs": "^2.4.5",
+    "@tauri-apps/plugin-opener": "^2",
+    "js-yaml": "^4.1.1",
+    "lucide-react": "^0.564.0",
+    "papaparse": "^5.5.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@tauri-apps/cli": "^2",
+    "@vitejs/plugin-react": "^4.6.0",
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
+    "vite": "^7.0.4"
+  }
+}
