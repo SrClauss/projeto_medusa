@@ -1,280 +1,206 @@
-# MedusaProject - Wizard de Implantação Automatizada
+# 🏪 Projeto Medusa - E-commerce Deployment Wizard
 
-## 🚀 Visão Geral
+## 📁 Estrutura do Repositório
 
-**MedusaProject** é uma aplicação desktop desenvolvida com **Tauri** (Rust + React) que atua como um assistente gráfico (wizard) para implantação instantânea de lojas virtuais completas baseadas no ecossistema MedusaJS.
+Este repositório contém **duas variantes** do assistente de implantação de lojas virtuais:
 
-O produto oferece uma experiência "zero DevOps": o usuário fornece apenas um servidor Linux limpo, as configurações da loja (identidade visual, produtos e imagens) e, em poucos minutos, recebe uma loja funcional com backend Medusa e frontend Next.js personalizado.
-
-## ✨ Diferenciais
-
-- **Backend MedusaJS**: e-commerce headless, pronto para ser administrado via dashboard
-- **Frontend Next.js**: loja virtual moderna, otimizada para SEO, com as melhores práticas de performance
-- **Automação completa**: desde a configuração do servidor (Docker, PostgreSQL, Redis, MinIO) até o build e deploy do frontend
-- **10 Escolas de Design**: Glassmorphism, Material Design 3, Neumorphism, Brutalismo, Minimalismo Nórdico, Luxury, Cyberpunk, Bento Grid, Retro/Vintage, Claymorphism
-- **Integração Mercado Pago**: Gateway de pagamento configurado automaticamente com webhooks
-- **Customização Visual**: Escolha de cores e tipografia para personalizar completamente sua loja
-
-## 🎯 Público-alvo
-
-- Desenvolvedores que querem prototipar lojas rapidamente
-- Agências que entregam lojas para clientes sem se preocupar com infraestrutura
-- Empreendedores técnicos com servidor próprio
-
-## 📋 Pré-requisitos
-
-### Servidor
-- Servidor Linux (Ubuntu 20.04+, Debian 11+, ou similar)
-- Acesso SSH via chave pública
-- Portas 80 e 443 abertas (para SSL automático via Let's Encrypt)
-- Mínimo 2GB RAM, 20GB disco
-- Docker e Docker Compose (serão instalados automaticamente se necessário)
-
-### Desenvolvimento
-- Node.js 18+ e npm
-- Rust 1.70+ e Cargo
-- Sistema operacional: Windows, macOS ou Linux
-
-## 🛠️ Instalação para Desenvolvimento
-
-### 1. Clone o repositório
-
-```bash
-git clone https://github.com/SrClauss/projeto_medusa.git
-cd projeto_medusa
+```
+projeto_medusa/
+├── original/          # 🚀 Versão MedusaJS (headless e-commerce)
+└── woocommerce/       # 🛍️ Versão WooCommerce (WordPress)
 ```
 
-### 2. Instale as dependências
+## 🎯 Sobre o Projeto
+
+O **Projeto Medusa** é uma aplicação desktop desenvolvida com **Tauri** (Rust + React) que atua como um assistente gráfico (wizard) para implantação automatizada de lojas virtuais completas.
+
+### 🚀 Versão Original - MedusaJS
+
+**Localização:** [`/original`](./original)
+
+Wizard para implantar lojas baseadas em **MedusaJS**, um e-commerce headless moderno construído com Node.js.
+
+#### Características:
+- ✅ Backend MedusaJS (Node.js)
+- ✅ Frontend Next.js customizável
+- ✅ PostgreSQL + Redis + MinIO
+- ✅ 10 escolas de design pré-configuradas
+- ✅ Integração Mercado Pago
+- ✅ Deploy automatizado via Docker
+
+**[📖 Ver documentação completa →](./original/README.md)**
+
+---
+
+### 🛍️ Versão WooCommerce
+
+**Localização:** [`/woocommerce`](./woocommerce)
+
+Wizard para implantar lojas baseadas em **WordPress + WooCommerce**, a plataforma de e-commerce mais popular do mundo.
+
+#### Características:
+- ✅ WordPress + WooCommerce
+- ✅ MySQL + Nginx + Redis
+- ✅ Temas WooCommerce populares
+- ✅ Múltiplos gateways de pagamento
+- ✅ Plugins essenciais incluídos
+- ✅ Deploy automatizado via Docker
+
+**[📖 Ver documentação completa →](./woocommerce/README.md)**
+
+---
+
+## 🤔 Qual Versão Escolher?
+
+### Escolha **MedusaJS** (`/original`) se:
+- ✅ Você quer performance máxima
+- ✅ Precisa de uma arquitetura API-first/headless
+- ✅ Tem equipe de desenvolvimento
+- ✅ Valoriza tecnologia moderna (Node.js, React)
+- ✅ Planeja integrações complexas e customizações profundas
+- ✅ Quer controle total sobre o frontend
+
+### Escolha **WooCommerce** (`/woocommerce`) se:
+- ✅ Prefere uma solução madura e testada
+- ✅ Quer acesso a milhares de plugins prontos
+- ✅ Precisa de interface administrativa familiar
+- ✅ Não tem equipe técnica avançada
+- ✅ Valoriza ecossistema grande e suporte comunitário
+- ✅ Quer temas prontos e facilmente customizáveis
+
+## 📊 Comparação Rápida
+
+| Característica | MedusaJS (Original) | WooCommerce |
+|----------------|---------------------|-------------|
+| **Tecnologia** | Node.js + React | WordPress (PHP) |
+| **Arquitetura** | Headless/API-first | Monolítico |
+| **Curva de Aprendizado** | Média/Alta | Baixa |
+| **Ecossistema** | Novo e crescente | Maduro (50k+ plugins) |
+| **Performance** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ (com cache) |
+| **Customização** | Total (código) | Alta (plugins/temas) |
+| **SEO** | Manual | Nativo + Plugins |
+| **Ideal Para** | Projetos modernos | Lojas tradicionais |
+
+## 🚀 Como Começar
+
+### Para desenvolver a versão MedusaJS:
 
 ```bash
-# Instalar dependências do frontend
+cd original
 npm install
-
-# As dependências do Rust serão instaladas automaticamente pelo Cargo
-```
-
-### 3. Instale dependências do sistema (apenas Linux)
-
-Para Ubuntu/Debian:
-```bash
-sudo apt-get update
-sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libssl-dev
-```
-
-Para Fedora:
-```bash
-sudo dnf install webkit2gtk4.1-devel gtk3-devel libappindicator-gtk3-devel librsvg2-devel openssl-devel
-```
-
-Para Arch:
-```bash
-sudo pacman -S webkit2gtk-4.1 gtk3 libappindicator-gtk3 librsvg openssl
-```
-
-## 🚀 Executando o Projeto
-
-### Modo de Desenvolvimento
-
-```bash
 npm run dev
 ```
 
-Isso iniciará o servidor Vite e abrirá a aplicação Tauri.
+**[📖 Veja o guia completo de desenvolvimento →](./original/DEVELOPMENT.md)**
 
-### Build para Produção
+### Para desenvolver a versão WooCommerce:
 
 ```bash
-npm run build
-npm run tauri build
+cd woocommerce
+npm install
+npm run dev
 ```
 
-Os instaladores estarão disponíveis em `src-tauri/target/release/bundle/`.
+**[📖 Veja o guia completo de desenvolvimento →](./woocommerce/README.md)**
 
-## 📖 Como Usar o Wizard
+## 🛠️ Tecnologias Utilizadas
 
-### Passo 1: Configuração do Servidor
-- Informe o IP do servidor e o domínio da loja
-- O sistema detecta automaticamente sua chave SSH em `~/.ssh/id_rsa`
-- Clique em "Conectar" para verificar a conectividade
+### Frontend (Ambas as Versões)
+- **React 19** - Framework UI moderno
+- **Tailwind CSS** - Framework CSS utilitário
+- **Tauri 2.x** - Framework desktop nativo
+- **Vite** - Build tool rápido
+- **Lucide React** - Biblioteca de ícones
 
-### Passo 2: Identidade da Loja
-- Defina o nome e o slogan da sua loja
-- Estes dados serão usados no frontend e no backend
+### Backend (Ambas as Versões)
+- **Rust** - Linguagem de sistemas
+- **Tokio** - Runtime assíncrono
+- **SSH2** - Cliente SSH
+- **Docker** - Containerização
 
-### Passo 3: Escola de Design
-- Escolha entre 10 escolas de design pré-configuradas
-- Cada escola tem uma paleta de cores e estilo visual único
+### Stack Implantada
 
-### Passo 4: Personalização do Tema
-- Ajuste as cores primária, secundária e de fundo
-- Escolha a combinação de fontes que melhor representa sua marca
+#### MedusaJS
+- MedusaJS (Node.js)
+- PostgreSQL
+- Redis
+- MinIO
+- Caddy
 
-### Passo 5: Configuração de Pagamento
-- Insira seu token de acesso do Mercado Pago
-- Escolha entre modo de teste ou produção
-- Configure o webhook para notificações de pagamento
+#### WooCommerce
+- WordPress + WooCommerce
+- MySQL
+- Nginx
+- Redis (opcional)
+- Certbot
 
-### Passo 6: Upload de Produtos (CSV)
-- Selecione um arquivo CSV com seus produtos
-- Campos obrigatórios: `nome`, `preco`, `descricao`
-- Campos opcionais: `uuid`, `codigo_interno`
+## 📋 Pré-requisitos
 
-### Passo 7: Seleção de Imagens
-- Escolha o diretório raiz contendo as imagens
-- Cada subpasta deve ter o nome igual ao `codigo_interno` do produto
-- O sistema valida automaticamente a correspondência
+Para desenvolver qualquer uma das versões:
 
-### Passo 8: Implantação
-- Revise o resumo da configuração
-- Clique em "Iniciar Implantação"
-- Acompanhe os logs em tempo real
+- **Node.js** 18+ e npm
+- **Rust** 1.70+ e Cargo
+- **Sistema:** Windows, macOS ou Linux
 
-### Passo 9: Conclusão
-- Acesse sua loja através da URL fornecida
-- Configure o webhook no painel do Mercado Pago
-- Faça login no painel administrativo com as credenciais padrão
+Para implantação (servidor):
 
-## 📄 Formato do CSV de Produtos
+- **Linux** (Ubuntu 20.04+, Debian 11+)
+- **Acesso SSH** via chave pública
+- **Portas 80 e 443** abertas
+- **Mínimo:** 2GB RAM, 20GB disco
+- **Docker** e Docker Compose
 
-Crie um arquivo CSV com os seguintes campos:
+## 📖 Documentação Completa
 
-```csv
-codigo_interno,nome,preco,descricao
-1,Camiseta Básica,29.90,Camiseta 100% algodão em diversas cores
-2,Calça Jeans,89.90,Calça jeans com modelagem moderna
-3,Tênis Esportivo,149.90,Tênis ideal para corrida e caminhada
-```
+### Versão MedusaJS (Original)
+- [📘 README](./original/README.md)
+- [🔧 Guia de Desenvolvimento](./original/DEVELOPMENT.md)
+- [📝 Sumário do Projeto](./original/PROJECT_SUMMARY.md)
+- [✅ TODO List](./original/TODO.md)
+- [📸 Screenshots](./original/SCREENSHOTS.md)
 
-### Campos
-
-- **codigo_interno** (opcional): Código usado para associar imagens. Se vazio, será gerado sequencialmente
-- **nome** (obrigatório): Nome do produto
-- **preco** (obrigatório): Preço do produto em formato decimal (ex: 29.90)
-- **descricao** (obrigatório): Descrição detalhada do produto
-- **uuid** (opcional): ID único. Se vazio, será gerado automaticamente
-
-## 📁 Estrutura de Imagens
-
-Organize suas imagens da seguinte forma:
-
-```
-imagens/
-├── 1/
-│   ├── foto1.jpg
-│   ├── foto2.jpg
-│   └── foto3.png
-├── 2/
-│   ├── produto.jpg
-│   └── detalhe.webp
-└── 3/
-    └── imagem.jpg
-```
-
-- Os nomes das subpastas devem corresponder ao `codigo_interno` dos produtos
-- Formatos suportados: JPG, JPEG, PNG, WEBP, GIF
-- As imagens serão automaticamente otimizadas durante o upload
-
-## 🔧 Configuração do Mercado Pago
-
-### 1. Obtenha suas credenciais
-
-Acesse: https://www.mercadopago.com.br/developers/panel/credentials
-
-- Para testes: Use o "Access Token" de teste
-- Para produção: Use o "Access Token" de produção
-
-### 2. Configure os webhooks
-
-Após a implantação, acesse: https://www.mercadopago.com.br/developers/panel/webhooks
-
-Configure a URL fornecida no wizard (ex: `https://sua-loja.com/api/webhooks/mercadopago`)
-
-Eventos a configurar:
-- `payment.created`
-- `payment.updated`
-- `merchant_order.updated`
-
-## 🏗️ Arquitetura do Sistema
-
-### Frontend (Wizard Desktop)
-- **React 19**: Interface do usuário moderna e responsiva
-- **Tailwind CSS**: Estilização rápida e consistente
-- **Tauri**: Wrapper nativo para desktop
-- **Lucide React**: Ícones modernos
-
-### Backend (Rust)
-- **Tauri Core**: Gerenciamento da aplicação desktop
-- **SSH2**: Conexão e execução de comandos remotos
-- **Image**: Processamento e otimização de imagens
-- **CSV**: Parser de arquivos CSV
-- **Tokio**: Runtime assíncrono
-
-### Stack Implantada no Servidor
-- **MedusaJS**: Backend de e-commerce headless
-- **PostgreSQL**: Banco de dados relacional
-- **Redis**: Cache e filas
-- **MinIO**: Armazenamento de objetos (S3-compatible)
-- **Caddy**: Servidor web com SSL automático
-- **Next.js**: Frontend da loja (a ser implementado)
-
-## 🔐 Segurança
-
-- Todas as conexões SSH usam autenticação por chave pública
-- SSL/TLS automático via Let's Encrypt
-- Tokens de pagamento são armazenados de forma segura no servidor
-- Webhooks validados por secret compartilhado
-
-## 🐛 Troubleshooting
-
-### Erro de conexão SSH
-- Verifique se sua chave SSH está em `~/.ssh/id_rsa`
-- Confirme que o IP do servidor está correto
-- Verifique se a porta 22 está aberta no firewall
-
-### Erro ao processar CSV
-- Certifique-se de que o arquivo está codificado em UTF-8
-- Verifique se os campos obrigatórios estão presentes
-- Use vírgula (`,`) como separador
-
-### Imagens não aparecem
-- Verifique se os nomes das pastas correspondem aos códigos internos
-- Confirme que as imagens estão em formatos suportados
-- Certifique-se de que o MinIO está rodando corretamente
-
-## 📚 Recursos Adicionais
-
-- [Documentação do MedusaJS](https://docs.medusajs.com/)
-- [Documentação do Tauri](https://tauri.app/)
-- [Mercado Pago Developers](https://www.mercadopago.com.br/developers/)
-- [Docker Documentation](https://docs.docker.com/)
+### Versão WooCommerce
+- [📗 README](./woocommerce/README.md)
 
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas! Por favor:
+Contribuições são bem-vindas em ambas as versões! 
 
 1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
-4. Push para a branch (`git push origin feature/MinhaFeature`)
-5. Abra um Pull Request
+2. Escolha a versão que quer contribuir (`original/` ou `woocommerce/`)
+3. Crie uma branch para sua feature
+4. Commit suas mudanças
+5. Push para a branch
+6. Abra um Pull Request
 
 ## 📝 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+MIT License - Veja o arquivo LICENSE para mais detalhes.
 
 ## 👤 Autor
 
 **SrClauss**
-
 - GitHub: [@SrClauss](https://github.com/SrClauss)
 
 ## 🙏 Agradecimentos
 
-- Equipe do MedusaJS pelo excelente framework de e-commerce
-- Equipe do Tauri pelo framework desktop incrível
-- Mercado Pago pela API de pagamentos robusta
+- Equipe do **MedusaJS** pelo framework de e-commerce headless
+- Equipe do **WooCommerce/Automattic** pela plataforma robusta
+- Equipe do **Tauri** pelo framework desktop incrível
+- **Mercado Pago** pela API de pagamentos
 - Comunidade open source
 
 ---
 
-⭐️ Se este projeto foi útil para você, considere dar uma estrela no GitHub!
+## 🚦 Status dos Projetos
+
+| Projeto | Status | Versão |
+|---------|--------|--------|
+| MedusaJS (Original) | 🟡 Em Desenvolvimento (MVP) | 0.1.0 |
+| WooCommerce | 🔵 Em Planejamento | 0.1.0 |
+
+---
+
+⭐️ **Se este projeto foi útil, considere dar uma estrela no GitHub!** ⭐️
+
+**Última atualização:** 2026-02-16
