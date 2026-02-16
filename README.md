@@ -1,5 +1,7 @@
 # 🏪 Projeto Medusa - E-commerce Deployment Wizard
 
+> 📁 **[Ver estrutura detalhada do repositório →](./STRUCTURE.md)**
+
 ## 📁 Estrutura do Repositório
 
 Este repositório contém **duas variantes** do assistente de implantação de lojas virtuais:
